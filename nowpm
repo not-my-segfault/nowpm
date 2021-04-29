@@ -29,7 +29,7 @@ then
 	exit
 fi
 
-if [ $(wc -w $1 | cut -c1-8) -lt $2 ]
+if [ $(wc -w $1 | sed 's/ //g' | cut -c1-4) -lt $2 ]
 then
 	echo ""
 	echo "> you have requested more words than exist in $1 . check the file and try again"
@@ -49,9 +49,9 @@ cat /tmp/nowpm_if
 echo ""
 echo ""
 
-start=$(python -c 'from time import time; print int(round(time() * 1000))')
+start=$(python -c 'from time import time; print(int(round(time() * 1000)))')
 read tested
-duration_ms=$(echo "scale=2 ; $(python -c 'from time import time; print int(round(time() * 1000))') - $start " | bc)
+duration_ms=$(echo "scale=2 ; $(python -c 'from time import time; print(int(round(time() * 1000)))') - $start " | bc)
 duration=$(echo "scale=2 ; $duration_ms / 1000 " | bc)
 
 echo $tested > /tmp/nowpm_ui
@@ -74,7 +74,7 @@ echo ""
 echo "> accuracy results:"
 echo ""
 
-wdiff -sa /tmp/nowpm_if /tmp/nowpm_ui
+wdiff -s /tmp/nowpm_if /tmp/nowpm_ui
 
 echo ""
 
