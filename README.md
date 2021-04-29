@@ -22,6 +22,8 @@ x being the amount of words you want to grab from the file
 
 the words are taken at random, and all lowercased (we're testing typing speed, not how fast and how often you can edge over to shift)
 
+attached is also a file (`words`) containing 1000 random words on newlines. feel free to use it as the dictionary file, or to remove it and use your own
+
 # install instructions
 
 - clone the repo to your system
