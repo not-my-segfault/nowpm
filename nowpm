@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "" ]
+then
+	echo ""
+	echo "> you need to specify an input file, run \"nowpm help\" for more info"
+	echo ""
+	exit
+fi
+
+if [ "$1" == "help" ]
+then
+	echo ""
+	echo "> usage:"
+	echo ""
+	echo "nowpm /foo/bar/baz x"
+	echo ""
+	echo "\"/foo/bar/baz\" - path to the dictionary file"
+	echo "\"x\" - amount of words to grab"
+	echo ""
+	exit
+fi
+
+if [ ! -f "$1" ]
+then
+	echo ""
+	echo "> there is no file at $1 , check your spelling and try again"
+	echo ""
+	exit
+fi
+
+if [ $(wc -w $1 | cut -c1-8) -lt $2 ]
+then
+	echo ""
+	echo "> you have requested more words than exist in $1 . check the file and try again"
+	echo ""
+	exit
+fi
+
+touch /tmp/nowpm_if
+touch /tmp/nowpm_ui
+
+echo $(cat $1) | sed 's/ /\n/g' | sed '/^$/d' | sort -u --random-sort | head -$2 | tr '[:upper:]' '[:lower:]'  | tr '\n' ' ' > /tmp/nowpm_if
+
+echo ""
+echo "> type this out, once you are finished, press return/enter"
+echo ""
+cat /tmp/nowpm_if
+echo ""
+echo ""
+
+start=$(python -c 'from time import time; print int(round(time() * 1000))')
+read tested
+duration_ms=$(echo "scale=2 ; $(python -c 'from time import time; print int(round(time() * 1000))') - $start " | bc)
+duration=$(echo "scale=2 ; $duration_ms / 1000 " | bc)
+
+echo $tested > /tmp/nowpm_ui
+
+cps=$(echo "scale=2 ; ${#tested} / $duration" | bc)
+wps=$(echo "scale=2 ; $cps / 4.8 " | bc)
+wpm=$(echo "scale=2 ; $wps * 60" | bc)
+
+echo ""
+echo "> speed results:"
+echo ""
+echo "time taken (see README.md): $duration"
+echo "character count: ${#tested}"
+echo ""
+echo "total cps = $cps"
+echo "total wpm (see README.md) = $wpm"
+echo ""
+
+echo ""
+echo "> accuracy results:"
+echo ""
+
+wdiff -sa /tmp/nowpm_if /tmp/nowpm_ui
+
+echo ""
+
+cp /dev/null /tmp/nowpm_if
+cp /dev/null /tmp/nowpm_ui
