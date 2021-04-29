@@ -94,6 +94,6 @@ i chose to call python instead of ` date -u %N` for one simple reason
 
 
 
-the %N feature is *not* available on *BSD systems *or* macOS (which also uses FreeBSD coreutils)
+the %N feature is *not* available on \*bsd systems *or* macos (which also uses freebsd coreutils)
 
 and since i write these programs to be able to work for *anyone*, i have made the active choice to run the python code instead. in my belief, it is reasonable to have python installed, but you shouldnt have to replace your own coreutils with GNU ones just to check the milliseconds, especially since more people now than ever are trying alternative options.
