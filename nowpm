@@ -29,10 +29,18 @@ then
 	exit
 fi
 
+if [ "$2" == "" ]
+then
+	echo ""
+	echo "> you need to specify an amount of words to grab from the file"
+	echo ""
+	exit
+fi
+
 if [ $(wc -w $1 | sed 's/ //g' | cut -c1-4) -lt $2 ]
 then
 	echo ""
-	echo "> you have requested more words than exist in $1 . check the file and try again"
+	echo "> you have requested more words than exist in $1 , check the file and try again"
 	echo ""
 	exit
 fi
