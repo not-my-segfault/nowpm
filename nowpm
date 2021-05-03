@@ -82,7 +82,7 @@ echo ""
 echo "> accuracy results:"
 echo ""
 
-wdiff -s /tmp/nowpm_if /tmp/nowpm_ui
+wdiff -s /tmp/nowpm_if /tmp/nowpm_ui | head -n 2 | sed 's|/tmp/nowpm_if: |\n|g'
 
 echo ""
 
